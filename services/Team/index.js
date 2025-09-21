@@ -20,7 +20,7 @@ class TeamService extends AbstractService {
 
     static async getTeams() {
         try {
-            const teams = await AbstractService.getDocuments(teamModel)
+            const teams = await teamModel.find().populate('members').populate('matches');
             if(!teams) throw new AppError("could not get all the teams", 400)
             return teams
         } catch (error) {
@@ -31,7 +31,15 @@ class TeamService extends AbstractService {
 
     static async getTeam(id) {
         try {
-            const team = await AbstractService.getSingleDocumentById(teamModel, id)
+            const team = await teamModel.findById(id)
+                .populate('members')
+                .populate({
+                    path: 'matches',
+                    populate: {
+                        path: 'homeTeam awayTeam',
+                        model: 'Team'
+                    }
+                })
             if(!team) throw new AppError("could not get the team data", 400)
             return team
         } catch (error) {
