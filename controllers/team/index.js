@@ -9,13 +9,13 @@ class TeamController extends AbstractController {
 
     static async createTeam(req, res) {
         try {
-            const details = req.body;
+            const details = req.body; 
             const team = await TeamService.createTeam(details);
             console.log(team);
 
             if (team) {
                 const { data } = details;
-                AbstractController.successResponse(res, data, 200, 'Team Created');
+                AbstractController.successResponse(res, team, 200, 'Team Created');
             }
         } catch (error) {
             console.log(error);
@@ -44,6 +44,7 @@ class TeamController extends AbstractController {
     }
     
     static async updateTeam(req, res) {
+        console.log("update team called", req.body);
         try {
             const id = req.params.id;
             const data = req.body;

@@ -45,6 +45,9 @@ app.use("/api/v1/leagues", require("./routes/leagues.js"));
 app.use("/api/v1/queries", require("./routes/queries"));
 app.use("/api/v1/fields", require("./routes/field.js"));
 app.use("/api/v1/users", require("./routes/users"));
+app.use("/api/v1/teams", require("./routes/team.js"));
+app.use("/api/v1/matches", require("./routes/match.js"));
+// app.use("/api/v1/team", require("./routes/team.js"));
 
 app.get("/", (req, res) => {
   res.send("Welcome to BOFA API v1")

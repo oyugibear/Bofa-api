@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['Pending', 'Completed'],
     },
-    therapy_notes: {
+    coaching_notes: {
         type: Array,
         default: [
             {
