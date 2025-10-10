@@ -2,6 +2,7 @@ const AbstractController = require('../AbstractController');
 const MatchService = require('../../services/Match/index.js');
 const AppError = require('../../errors/app-error');
 const TeamService = require('../../services/Team/index.js');
+const StandingsService = require('../../services/Standings/index.js');
 
 class MatchController extends AbstractController {
     constructor() {
@@ -70,8 +71,41 @@ class MatchController extends AbstractController {
         try {
             const id = req.params.id;
             const data = req.body;
+            
+            // Get the original match data for standings calculation
+            const originalMatch = await MatchService.getMatch(id);
+            const oldScore = originalMatch?.score;
+            
             const match = await MatchService.updateMatch(id, data);
-            console.log(match);
+            // console.log(match);
+
+            // Update standings if the match belongs to a league and has score changes
+            if (match && match.league) {
+                const hasScoreChange = data.score && 
+                    (data.score.home !== undefined || data.score.away !== undefined);
+                
+                if (hasScoreChange) {
+                    try {
+                        console.log('Updating standings for match:', {
+                            matchId: id,
+                            leagueId: match.league,
+                            oldScore,
+                            newScore: match.score
+                        });
+                        
+                        await StandingsService.updateStandingsForMatch(id, oldScore);
+                        console.log('✅ Standings updated successfully for match:', id);
+                    } catch (standingsError) {
+                        console.error('❌ Error updating standings:', standingsError);
+                        // Don't fail the match update if standings update fails
+                        // but log it for debugging
+                    }
+                } else {
+                    console.log('No score changes detected, skipping standings update');
+                }
+            } else {
+                console.log('Match not associated with league, skipping standings update');
+            }
 
             if (match) {
                 AbstractController.successResponse(res, match, 200, 'Match updated successfully');

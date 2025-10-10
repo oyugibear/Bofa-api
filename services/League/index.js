@@ -1,5 +1,5 @@
 const AbstractService = require("../AbstractService.js")
-const profileModel = require("../../models/leagueModel.js")
+const leagueModel = require("../../models/leagueModel.js")
 const AppError = require("../../errors/app-error.js")
 
 class LeagueService extends AbstractService {
@@ -20,22 +20,84 @@ class LeagueService extends AbstractService {
 
     static async getLeagues() {
         try {
-            const leagues = await AbstractService.getDocuments(leagueModel)
+            const leagues = await leagueModel.find()
+                .populate({
+                    path: 'teams',
+                    model: 'Team',
+                    select: 'name members coach captain status points achievements'
+                })
+                .populate({
+                    path: 'teams.coach',
+                    model: 'User',
+                    select: 'first_name second_name email'
+                })
+                .populate({
+                    path: 'teams.captain',
+                    model: 'User',
+                    select: 'first_name second_name email'
+                });
+
+            console.log('Found leagues:', leagues.length);
+            if (leagues.length > 0) {
+                console.log('First league teams populated:', leagues[0].teams);
+            }
+
             if(!leagues) throw new AppError("could not get all the leagues", 400)
             return leagues
         } catch (error) {
-            console.log(error)
+            console.log('Error in getLeagues populate:', error)
             throw new AppError('Error getting all leagues', 400);
         }
     }
 
     static async getLeague(id) {
         try {
-            const league = await AbstractService.getSingleDocumentById(leagueModel, id)
+            const league = await leagueModel.findById(id)
+                .populate({
+                    path: 'teams',
+                    model: 'Team',
+                    select: 'name members coach captain status points achievements',
+                    populate: [
+                        {
+                            path: 'coach',
+                            model: 'User',
+                            select: 'first_name second_name email'
+                        },
+                        {
+                            path: 'captain',
+                            model: 'User',
+                            select: 'first_name second_name email'
+                        },
+                        {
+                            path: 'members',
+                            model: 'User',
+                            select: 'first_name second_name email'
+                        }
+                    ]
+                }).populate({
+                    path: 'matches',
+                    model: 'Match',
+                    select: 'homeTeam awayTeam date venue status score',
+                    populate: [
+                        {
+                            path: 'homeTeam',
+                            model: 'Team',
+                            select: 'name'
+                        },
+                        {
+                            path: 'awayTeam',
+                            model: 'Team',
+                            select: 'name'
+                        }
+                    ]
+                });
+
+            console.log('Found league with populated teams:', league ? league.teams.length : 'No league found');
+            
             if(!league) throw new AppError("could not get the league data", 400)
             return league
         } catch (error) {
-            console.log(error)
+            console.log('Error in getLeague populate:', error)
             throw new AppError('Error getting league', 400);
         }
     }

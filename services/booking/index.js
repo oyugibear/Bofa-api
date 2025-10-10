@@ -27,7 +27,7 @@ class BookingService extends AbstractService {
         const booking = await AbstractService.editDocument(bookingModel, id, data)
         if(!booking) throw new AppError("could not edit the booking", 400)
 
-        const populatedItem = await bookingModel.findById(booking._id).populate("postedBy paymentInfo therapist")
+        const populatedItem = await bookingModel.findById(booking._id).populate("postedBy paymentInfo")
         console.log("Updated booking:", populatedItem)
         
         return {
