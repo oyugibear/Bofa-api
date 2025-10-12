@@ -47,6 +47,9 @@ app.use("/api/v1/fields", require("./routes/field.js"));
 app.use("/api/v1/users", require("./routes/users"));
 app.use("/api/v1/teams", require("./routes/team.js"));
 app.use("/api/v1/matches", require("./routes/match.js"));
+app.use("/api/v1/admin", require("./routes/admin.js"));
+
+app.use("/api/v1/standings", require("./routes/standings.js"));
 // app.use("/api/v1/team", require("./routes/team.js"));
 
 app.get("/", (req, res) => {
