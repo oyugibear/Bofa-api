@@ -19,11 +19,11 @@ async function sendForgotEmail(code, email) {
 
     const info = await transporter.sendMail({
         from: {
-            name: 'Africa Jipdende Wellness',
+            name: 'Arena 03 Kilifi',
             address: process.env.SENDERS_EMAIL,
         }, // sender address
         to: email, // list of receivers
-        subject: "Password Reset - Africa Jipende Wellness",
+        subject: "Password Reset - Arena 03 Kilifi",
         html: `
         <!DOCTYPE html>
         <html>
@@ -35,8 +35,8 @@ async function sendForgotEmail(code, email) {
         <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
             <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
                 <!-- Header -->
-                <div style="background-color: #eab308; padding: 30px; text-align: center;">
-                    <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Africa Jipende Wellness</h1>
+                <div style="background-color: #3A8726; padding: 30px; text-align: center;">
+                    <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Arena 03 Kilifi</h1>
                     <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">Password Reset Request</p>
                 </div>
                 
@@ -48,8 +48,8 @@ async function sendForgotEmail(code, email) {
                     </p>
                     
                     <!-- Reset Code -->
-                    <div style="background-color: #f8f9fa; border: 2px dashed #eab308; padding: 20px; text-align: center; margin: 25px 0;">
-                        <h3 style="color: #eab308; margin: 0; font-size: 32px; letter-spacing: 3px;">${code}</h3>
+                    <div style="background-color: #f8f9fa; border: 2px dashed #3A8726; padding: 20px; text-align: center; margin: 25px 0;">
+                        <h3 style="color: #3A8726; margin: 0; font-size: 32px; letter-spacing: 3px;">${code}</h3>
                         <p style="color: #666666; margin: 10px 0 0 0; font-size: 14px;">This code will expire in 15 minutes</p>
                     </div>
                     
@@ -60,9 +60,9 @@ async function sendForgotEmail(code, email) {
                 
                 <!-- Footer -->
                 <div style="background-color: #f8f9fa; padding: 20px 30px; text-align: center;">
-                    <img src="cid:logo" alt="Africa Jipende Wellness Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
+                    <img src="cid:logo" alt="Arena 03 Kilifi Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
                     <p style="color: #999999; margin: 0; font-size: 14px;">
-                        © 2025 Africa Jipende Wellness. All rights reserved.
+                        © 2025 Arena 03 Kilifi. All rights reserved.
                     </p>
                 </div>
             </div>
@@ -95,11 +95,11 @@ async function sendWelcomeEmail (email) {
 
     const info = await transporter.sendMail({
         from: {
-            name: 'Africa Jipdende Wellness',
+            name: 'Arena 03 Kilifi',
             address: process.env.SENDERS_EMAIL,
         }, // sender address
         to: email, // list of receivers
-        subject: "Welcome to Africa Jipende Wellness", // Subject line
+        subject: "Welcome to Arena 03 Kilifi", // Subject line
         html: `
         <!DOCTYPE html>
         <html>
@@ -111,25 +111,25 @@ async function sendWelcomeEmail (email) {
         <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
             <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
                 <!-- Header -->
-                <div style="background-color: #eab308; padding: 30px; text-align: center;">
-                    <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Africa Jipende Wellness</h1>
-                    <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">Welcome to Our Community</p>
+                <div style="background-color: #3A8726; padding: 30px; text-align: center;">
+                    <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Arena 03 Kilifi</h1>
+                    <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">Welcome to Our Sports Community</p>
                 </div>
                 
                 <!-- Content -->
                 <div style="padding: 40px 30px;">
-                    <h2 style="color: #333333; margin: 0 0 20px 0;">Welcome to Our Platform!</h2>
+                    <h2 style="color: #333333; margin: 0 0 20px 0;">Welcome to Our Sports Facility!</h2>
                     <p style="color: #666666; line-height: 1.6; margin: 0 0 25px 0;">
-                        Thank you for registering with Africa Jipende Wellness! We are excited to have you join our community dedicated to mental health and wellness.
+                        Thank you for registering with Arena 03 Kilifi! We are excited to have you join our sports community dedicated to football excellence and fitness.
                     </p>
                     
-                    <div style="background-color: #f0f9ff; border-left: 4px solid #eab308; padding: 20px; margin: 25px 0;">
+                    <div style="background-color: #f0f9ff; border-left: 4px solid #3A8726; padding: 20px; margin: 25px 0;">
                         <h3 style="color: #333333; margin: 0 0 15px 0;">What's Next?</h3>
                         <ul style="color: #666666; margin: 0; padding-left: 20px;">
-                            <li style="margin-bottom: 8px;">Complete your profile to get personalized recommendations</li>
-                            <li style="margin-bottom: 8px;">Browse our available therapy services</li>
-                            <li style="margin-bottom: 8px;">Book your first session with our qualified therapists</li>
-                            <li>Join our community of wellness enthusiasts</li>
+                            <li style="margin-bottom: 8px;">Complete your profile to get personalized training recommendations</li>
+                            <li style="margin-bottom: 8px;">Book field sessions for training or matches</li>
+                            <li style="margin-bottom: 8px;">Join our football academy programs</li>
+                            <li>Participate in our competitive leagues and tournaments</li>
                         </ul>
                     </div>
                     
@@ -140,9 +140,9 @@ async function sendWelcomeEmail (email) {
                 
                 <!-- Footer -->
                 <div style="background-color: #f8f9fa; padding: 20px 30px; text-align: center;">
-                    <img src="cid:logo" alt="Africa Jipende Wellness Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
+                    <img src="cid:logo" alt="Arena 03 Kilifi Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
                     <p style="color: #999999; margin: 0; font-size: 14px;">
-                        © 2025 Africa Jipende Wellness. All rights reserved.
+                        © 2025 Arena 03 Kilifi. All rights reserved.
                     </p>
                 </div>
             </div>
@@ -174,11 +174,11 @@ async function sendBookingRecievedEmail (email) {
 
   const info = await transporter.sendMail({
       from: {
-          name: 'Africa Jipdende Wellness',
+          name: 'Arena 03 Kilifi',
           address: process.env.SENDERS_EMAIL,
       }, // sender address
       to: email, // list of receivers
-      subject: "Booking Confirmed - Africa Jipende Wellness", // Subject line
+      subject: "Booking Confirmed - Arena 03 Kilifi", // Subject line
       html: `
       <!DOCTYPE html>
       <html>
@@ -190,46 +190,46 @@ async function sendBookingRecievedEmail (email) {
       <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
           <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
               <!-- Header -->
-              <div style="background-color: #eab308; padding: 30px; text-align: center;">
-                  <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Africa Jipende Wellness</h1>
+              <div style="background-color: #3A8726; padding: 30px; text-align: center;">
+                  <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Arena 03 Kilifi</h1>
                   <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">Booking Confirmation</p>
               </div>
               
               <!-- Content -->
               <div style="padding: 40px 30px;">
                   <div style="text-align: center; margin-bottom: 30px;">
-                      <div style="background-color: #eab308; color: white; border-radius: 50%; width: 60px; height: 60px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 30px;">✓</div>
+                      <div style="background-color: #3A8726; color: white; border-radius: 50%; width: 60px; height: 60px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 30px;">✓</div>
                       <h2 style="color: #333333; margin: 0;">Payment Confirmed!</h2>
                   </div>
                   
                   <p style="color: #666666; line-height: 1.6; margin: 0 0 25px 0;">
-                      Thank you for your payment! Your booking has been successfully confirmed.
+                      Thank you for your payment! Your field booking has been successfully confirmed.
                   </p>
                   
-                  <div style="background-color: #fefce8; border: 1px solid #eab308; border-radius: 8px; padding: 20px; margin: 25px 0;">
-                      <h3 style="color: #ca8a04; margin: 0 0 15px 0;">What Happens Next?</h3>
+                  <div style="background-color: #fefce8; border: 1px solid #3A8726; border-radius: 8px; padding: 20px; margin: 25px 0;">
+                      <h3 style="color: #2C6A1B; margin: 0 0 15px 0;">What Happens Next?</h3>
                       <p style="color: #374151; margin: 0 0 15px 0;">
-                          A qualified therapist will contact you shortly to discuss your booking and schedule your session.
+                          Your field reservation is confirmed and ready for your training session or match.
                       </p>
                       <p style="color: #374151; margin: 0;">
-                          You will receive the session details including the meeting link and any preparation instructions.
+                          You can arrive at Arena 03 Kilifi at your scheduled time. All facilities will be prepared for your use.
                       </p>
                   </div>
                   
                   <div style="background-color: #f8f9fa; border-radius: 8px; padding: 20px; margin: 25px 0;">
                       <h3 style="color: #333333; margin: 0 0 15px 0;">Need Help?</h3>
                       <p style="color: #666666; margin: 0;">
-                          If you have any questions or need to make changes to your booking, please contact our support team at 
-                          <strong style="color: #eab308;">info@africajipendewellness.com</strong>
+                          If you have any questions or need to make changes to your field booking, please contact our team at 
+                          <strong style="color: #3A8726;">info@arena03kilifi.com</strong> or call +254 708 123 456
                       </p>
                   </div>
               </div>
               
               <!-- Footer -->
               <div style="background-color: #f8f9fa; padding: 20px 30px; text-align: center;">
-                  <img src="cid:logo" alt="Africa Jipende Wellness Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
+                  <img src="cid:logo" alt="Arena 03 Kilifi Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
                   <p style="color: #999999; margin: 0; font-size: 14px;">
-                      © 2025 Africa Jipende Wellness. All rights reserved.
+                      © 2025 Arena 03 Kilifi. All rights reserved.
                   </p>
               </div>
           </div>
@@ -261,10 +261,10 @@ async function sendAdminBookingPaidEmail (email, booking, payment) {
 
   const info = await transporter.sendMail({
       from: {
-          name: 'Africa Jipdende Wellness',
+          name: 'Arena 03 Kilifi',
           address: process.env.SENDERS_EMAIL,
       }, // sender address
-      to: "info@africajipendewellness.com", // list of receivers
+      to: "info@arena03kilifi.com", // list of receivers
       subject: "New Paid Booking - Action Required", // Subject line
       html: `
       <!DOCTYPE html>
@@ -277,28 +277,28 @@ async function sendAdminBookingPaidEmail (email, booking, payment) {
       <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
           <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
               <!-- Header -->
-              <div style="background-color: #eab308; padding: 30px; text-align: center;">
-                  <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Africa Jipende Wellness</h1>
+              <div style="background-color: #3A8726; padding: 30px; text-align: center;">
+                  <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Arena 03 Kilifi</h1>
                   <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">Admin Notification</p>
               </div>
               
               <!-- Content -->
               <div style="padding: 40px 30px;">
                   <div style="text-align: center; margin-bottom: 30px;">
-                      <div style="background-color: #eab308; color: white; border-radius: 50%; width: 60px; height: 60px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 24px;">💰</div>
+                      <div style="background-color: #3A8726; color: white; border-radius: 50%; width: 60px; height: 60px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 24px;">💰</div>
                       <h2 style="color: #333333; margin: 0;">New Paid Booking Received!</h2>
                   </div>
                   
                   <p style="color: #666666; line-height: 1.6; margin: 0 0 25px 0;">
-                      A new client has successfully completed their payment and booking. Please review the details and assign a therapist.
+                      A new customer has successfully completed their payment for a field booking. Please review the details and prepare the facility.
                   </p>
                   
-                  <!-- Client Details -->
-                  <div style="background-color: #fefce8; border: 1px solid #eab308; border-radius: 8px; padding: 20px; margin: 25px 0;">
-                      <h3 style="color: #ca8a04; margin: 0 0 15px 0;">Client Information:</h3>
+                  <!-- Customer Details -->
+                  <div style="background-color: #fefce8; border: 1px solid #3A8726; border-radius: 8px; padding: 20px; margin: 25px 0;">
+                      <h3 style="color: #2C6A1B; margin: 0 0 15px 0;">Customer Information:</h3>
                       <table style="width: 100%; border-collapse: collapse;">
                           <tr>
-                              <td style="padding: 8px 0; color: #374151; font-weight: bold; width: 30%;">Client Name:</td>
+                              <td style="padding: 8px 0; color: #374151; font-weight: bold; width: 30%;">Customer Name:</td>
                               <td style="padding: 8px 0; color: #374151;">${booking.postedBy.first_name} ${booking.postedBy.second_name}</td>
                           </tr>
                           <tr>
@@ -317,18 +317,18 @@ async function sendAdminBookingPaidEmail (email, booking, payment) {
                   </div>
                   
                   <!-- Action Required -->
-                  <div style="background-color: #fffbeb; border: 1px solid #a16207; border-radius: 8px; padding: 20px; margin: 25px 0;">
-                      <h3 style="color: #a16207; margin: 0 0 15px 0;">Action Required:</h3>
+                  <div style="background-color: #fffbeb; border: 1px solid #2C6A1B; border-radius: 8px; padding: 20px; margin: 25px 0;">
+                      <h3 style="color: #2C6A1B; margin: 0 0 15px 0;">Action Required:</h3>
                       <ul style="color: #374151; margin: 0; padding-left: 20px;">
                           <li style="margin-bottom: 8px;">Login to the admin portal</li>
                           <li style="margin-bottom: 8px;">Review the booking details</li>
-                          <li style="margin-bottom: 8px;">Assign an appropriate therapist</li>
-                          <li>Contact the client to schedule their session</li>
+                          <li style="margin-bottom: 8px;">Prepare the field and facilities</li>
+                          <li>Contact the customer if needed for special requirements</li>
                       </ul>
                   </div>
                   
                   <div style="text-align: center; margin: 30px 0;">
-                      <a href="https://africajipendewellness.com" style="background-color: #eab308; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+                      <a href="https://arena03kilifi.com" style="background-color: #3A8726; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">
                           Access Admin Portal
                       </a>
                   </div>
@@ -336,9 +336,9 @@ async function sendAdminBookingPaidEmail (email, booking, payment) {
               
               <!-- Footer -->
               <div style="background-color: #f8f9fa; padding: 20px 30px; text-align: center;">
-                  <img src="cid:logo" alt="Africa Jipende Wellness Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
+                  <img src="cid:logo" alt="Arena 03 Kilifi Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
                   <p style="color: #999999; margin: 0; font-size: 14px;">
-                      © 2025 Africa Jipende Wellness. All rights reserved.
+                      © 2025 Arena 03 Kilifi. All rights reserved.
                   </p>
               </div>
           </div>
@@ -370,11 +370,11 @@ async function sendClientMeetingLinkEmail (email, booking) {
 
   const info = await transporter.sendMail({
       from: {
-          name: 'Africa Jipdende Wellness',
+          name: 'Arena 03 Kilifi',
           address: process.env.SENDERS_EMAIL,
       }, // sender address
       to: email, // list of receivers
-      subject: "Your Therapy Session Details - Africa Jipende Wellness", // Subject line
+      subject: "Your Field Booking Details - Arena 03 Kilifi", // Subject line
       html: `
       <!DOCTYPE html>
       <html>
@@ -386,21 +386,21 @@ async function sendClientMeetingLinkEmail (email, booking) {
       <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
           <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
               <!-- Header -->
-              <div style="background-color: #eab308; padding: 30px; text-align: center;">
-                  <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Africa Jipende Wellness</h1>
-                  <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">Your Session Details</p>
+              <div style="background-color: #3A8726; padding: 30px; text-align: center;">
+                  <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Arena 03 Kilifi</h1>
+                  <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">Your Booking Details</p>
               </div>
               
               <!-- Content -->
               <div style="padding: 40px 30px;">
                   <h2 style="color: #333333; margin: 0 0 20px 0;">Hello ${booking.postedBy.first_name}!</h2>
                   <p style="color: #666666; line-height: 1.6; margin: 0 0 25px 0;">
-                      Great news! Your therapy session has been confirmed and your therapist has been assigned. Here are your session details:
+                      Great news! Your field booking has been confirmed and is ready for your training or match. Here are your booking details:
                   </p>
                   
                   <!-- Session Details -->
-                  <div style="background-color: #fefce8; border: 1px solid #eab308; border-radius: 8px; padding: 25px; margin: 25px 0;">
-                      <h3 style="color: #ca8a04; margin: 0 0 20px 0;">📅 Session Information</h3>
+                  <div style="background-color: #fefce8; border: 1px solid #3A8726; border-radius: 8px; padding: 25px; margin: 25px 0;">
+                      <h3 style="color: #2C6A1B; margin: 0 0 20px 0;">📅 Session Information</h3>
                       <table style="width: 100%; border-collapse: collapse;">
                           <tr>
                               <td style="padding: 10px 0; color: #374151; font-weight: bold; width: 35%;">Booking ID:</td>
@@ -413,7 +413,7 @@ async function sendClientMeetingLinkEmail (email, booking) {
                           <tr>
                               <td style="padding: 10px 0; color: #374151; font-weight: bold;">Meeting Link:</td>
                               <td style="padding: 10px 0;">
-                                  <a href="${booking.googleMeetLink}" style="color: #eab308; text-decoration: none; font-weight: bold;">
+                                  <a href="${booking.googleMeetLink}" style="color: #3A8726; text-decoration: none; font-weight: bold;">
                                       Join Session
                                   </a>
                               </td>
@@ -422,9 +422,9 @@ async function sendClientMeetingLinkEmail (email, booking) {
                   </div>
                   
                   <!-- Important Notes -->
-                  <div style="background-color: #fffbeb; border: 1px solid #a16207; border-radius: 8px; padding: 20px; margin: 25px 0;">
-                      <h3 style="color: #a16207; margin: 0 0 15px 0;">🔔 Important Reminders:</h3>
-                      <ul style="color: #92400e; margin: 0; padding-left: 20px;">
+                  <div style="background-color: #fffbeb; border: 1px solid #2C6A1B; border-radius: 8px; padding: 20px; margin: 25px 0;">
+                      <h3 style="color: #2C6A1B; margin: 0 0 15px 0;">🔔 Important Reminders:</h3>
+                      <ul style="color: #1E4B0F; margin: 0; padding-left: 20px;">
                           <li style="margin-bottom: 8px;">Join the session 5 minutes early to test your connection</li>
                           <li style="margin-bottom: 8px;">Ensure you're in a quiet, private space</li>
                           <li style="margin-bottom: 8px;">Have a stable internet connection</li>
@@ -433,22 +433,22 @@ async function sendClientMeetingLinkEmail (email, booking) {
                   </div>
                   
                   <div style="text-align: center; margin: 30px 0;">
-                      <a href="${booking.googleMeetLink}" style="background-color: #eab308; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+                      <a href="${booking.googleMeetLink}" style="background-color: #3A8726; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">
                           Join Your Session
                       </a>
                   </div>
                   
                   <p style="color: #666666; line-height: 1.6; margin: 25px 0 0 0; text-align: center;">
                       If you have any questions, please contact us at 
-                      <strong style="color: #eab308;">info@africajipendewellness.com</strong>
+                      <strong style="color: #3A8726;">info@arena03kilifi.com</strong>
                   </p>
               </div>
               
               <!-- Footer -->
               <div style="background-color: #f8f9fa; padding: 20px 30px; text-align: center;">
-                  <img src="cid:logo" alt="Africa Jipende Wellness Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
+                  <img src="cid:logo" alt="Arena 03 Kilifi Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
                   <p style="color: #999999; margin: 0; font-size: 14px;">
-                      © 2025 Africa Jipende Wellness. All rights reserved.
+                      © 2025 Arena 03 Kilifi. All rights reserved.
                   </p>
               </div>
           </div>
@@ -480,11 +480,11 @@ async function sendClientRescheduleMeetingLinkEmail (email, booking) {
 
   const info = await transporter.sendMail({
       from: {
-          name: 'Africa Jipdende Wellness',
+          name: 'Arena 03 Kilifi',
           address: process.env.SENDERS_EMAIL,
       }, // sender address
       to: email, // list of receivers
-      subject: "Session Rescheduled - Africa Jipende Wellness", // Subject line
+      subject: "Booking Rescheduled - Arena 03 Kilifi", // Subject line
       html: `
       <!DOCTYPE html>
       <html>
@@ -496,25 +496,25 @@ async function sendClientRescheduleMeetingLinkEmail (email, booking) {
       <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
           <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
               <!-- Header -->
-              <div style="background-color: #eab308; padding: 30px; text-align: center;">
-                  <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Africa Jipende Wellness</h1>
-                  <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">Session Rescheduled</p>
+              <div style="background-color: #3A8726; padding: 30px; text-align: center;">
+                  <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Arena 03 Kilifi</h1>
+                  <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">Booking Rescheduled</p>
               </div>
               
               <!-- Content -->
               <div style="padding: 40px 30px;">
                   <div style="text-align: center; margin-bottom: 30px;">
-                      <div style="background-color: #eab308; color: white; border-radius: 50%; width: 60px; height: 60px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🔄</div>
-                      <h2 style="color: #333333; margin: 0;">Session Rescheduled</h2>
+                      <div style="background-color: #3A8726; color: white; border-radius: 50%; width: 60px; height: 60px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🔄</div>
+                      <h2 style="color: #333333; margin: 0;">Booking Rescheduled</h2>
                   </div>
                   
                   <p style="color: #666666; line-height: 1.6; margin: 0 0 25px 0;">
-                      Hello ${booking.postedBy.first_name}, your therapy session has been rescheduled. Please note the new date and time below:
+                      Hello ${booking.postedBy.first_name}, your field booking has been rescheduled. Please note the new date and time below:
                   </p>
                   
                   <!-- New Session Details -->
-                  <div style="background-color: #fefce8; border: 1px solid #eab308; border-radius: 8px; padding: 25px; margin: 25px 0;">
-                      <h3 style="color: #ca8a04; margin: 0 0 20px 0;">📅 Updated Session Details</h3>
+                  <div style="background-color: #fefce8; border: 1px solid #3A8726; border-radius: 8px; padding: 25px; margin: 25px 0;">
+                      <h3 style="color: #2C6A1B; margin: 0 0 20px 0;">📅 Updated Session Details</h3>
                       <table style="width: 100%; border-collapse: collapse;">
                           <tr>
                               <td style="padding: 10px 0; color: #374151; font-weight: bold; width: 35%;">Booking ID:</td>
@@ -552,9 +552,9 @@ async function sendClientRescheduleMeetingLinkEmail (email, booking) {
                   ` : ''}
                   
                   <!-- Important Notes -->
-                  <div style="background-color: #fffbeb; border: 1px solid #a16207; border-radius: 8px; padding: 20px; margin: 25px 0;">
-                      <h3 style="color: #a16207; margin: 0 0 15px 0;">🔔 Important Reminders:</h3>
-                      <ul style="color: #92400e; margin: 0; padding-left: 20px;">
+                  <div style="background-color: #fffbeb; border: 1px solid #2C6A1B; border-radius: 8px; padding: 20px; margin: 25px 0;">
+                      <h3 style="color: #2C6A1B; margin: 0 0 15px 0;">🔔 Important Reminders:</h3>
+                      <ul style="color: #1E4B0F; margin: 0; padding-left: 20px;">
                           <li style="margin-bottom: 8px;">Please update your calendar with the new date and time</li>
                           <li style="margin-bottom: 8px;">Join 5 minutes early to test your connection</li>
                           <li style="margin-bottom: 8px;">Contact us if the new time doesn't work for you</li>
@@ -563,22 +563,22 @@ async function sendClientRescheduleMeetingLinkEmail (email, booking) {
                   </div>
                   
                   <div style="text-align: center; margin: 30px 0;">
-                      <a href="${booking.rescheduleLink || booking.googleMeetLink}" style="background-color: #eab308; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+                      <a href="${booking.rescheduleLink || booking.googleMeetLink}" style="background-color: #3A8726; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">
                           Join Rescheduled Session
                       </a>
                   </div>
                   
                   <p style="color: #666666; line-height: 1.6; margin: 25px 0 0 0; text-align: center;">
                       We apologize for any inconvenience. If you have questions, contact us at 
-                      <strong style="color: #eab308;">info@africajipendewellness.com</strong>
+                      <strong style="color: #3A8726;">info@arena03kilifi.com</strong>
                   </p>
               </div>
               
               <!-- Footer -->
               <div style="background-color: #f8f9fa; padding: 20px 30px; text-align: center;">
-                  <img src="cid:logo" alt="Africa Jipende Wellness Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
+                  <img src="cid:logo" alt="Arena 03 Kilifi Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
                   <p style="color: #999999; margin: 0; font-size: 14px;">
-                      © 2025 Africa Jipende Wellness. All rights reserved.
+                      © 2025 Arena 03 Kilifi. All rights reserved.
                   </p>
               </div>
           </div>
@@ -610,11 +610,11 @@ async function sendClientReceiptEmail (email, data) {
 
   const info = await transporter.sendMail({
       from: {
-          name: 'Africa Jipdende Wellness',
+          name: 'Arena 03 Kilifi',
           address: process.env.SENDERS_EMAIL,
       }, // sender address
       to: email, // list of receivers
-      subject: "Payment Receipt - Africa Jipende Wellness", // Subject line
+      subject: "Payment Receipt - Arena 03 Kilifi", // Subject line
       html: `
       <!DOCTYPE html>
       <html>
@@ -626,15 +626,15 @@ async function sendClientReceiptEmail (email, data) {
       <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
           <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
               <!-- Header -->
-              <div style="background-color: #eab308; padding: 30px; text-align: center;">
-                  <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Africa Jipende Wellness</h1>
+              <div style="background-color: #3A8726; padding: 30px; text-align: center;">
+                  <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Arena 03 Kilifi</h1>
                   <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">Payment Receipt</p>
               </div>
               
               <!-- Content -->
               <div style="padding: 40px 30px;">
                   <div style="text-align: center; margin-bottom: 30px;">
-                      <div style="background-color: #eab308; color: white; border-radius: 50%; width: 60px; height: 60px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📧</div>
+                      <div style="background-color: #3A8726; color: white; border-radius: 50%; width: 60px; height: 60px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📧</div>
                       <h2 style="color: #333333; margin: 0;">Payment Receipt Ready</h2>
                   </div>
                   
@@ -643,13 +643,13 @@ async function sendClientReceiptEmail (email, data) {
                   </p>
                   
                   <!-- Receipt Details -->
-                  <div style="background-color: #fefce8; border: 1px solid #eab308; border-radius: 8px; padding: 25px; margin: 25px 0;">
-                      <h3 style="color: #ca8a04; margin: 0 0 20px 0;">🧾 Receipt Information</h3>
+                  <div style="background-color: #fefce8; border: 1px solid #3A8726; border-radius: 8px; padding: 25px; margin: 25px 0;">
+                      <h3 style="color: #2C6A1B; margin: 0 0 20px 0;">🧾 Receipt Information</h3>
                       <p style="color: #374151; margin: 0 0 20px 0;">
                           Your payment has been processed successfully and your receipt is ready for download.
                       </p>
                       <div style="text-align: center;">
-                          <a href="${data.receipt_pdf}" style="background-color: #eab308; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+                          <a href="${data.receipt_pdf}" style="background-color: #3A8726; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
                               📄 Download Receipt
                           </a>
                       </div>
@@ -659,38 +659,38 @@ async function sendClientReceiptEmail (email, data) {
                   <div style="background-color: #f8f9fa; border-radius: 8px; padding: 20px; margin: 25px 0;">
                       <h3 style="color: #374151; margin: 0 0 15px 0;">💳 Payment Summary</h3>
                       <p style="color: #6b7280; margin: 0 0 10px 0;">
-                          <strong>Service:</strong> Therapy Session Booking
+                          <strong>Service:</strong> Field Booking - Arena 03 Kilifi
                       </p>
                       <p style="color: #6b7280; margin: 0 0 10px 0;">
                           <strong>Client:</strong> ${data.postedBy.first_name} ${data.postedBy.second_name || ''}
                       </p>
                       <p style="color: #6b7280; margin: 0;">
-                          <strong>Status:</strong> <span style="color: #eab308; font-weight: bold;">Paid ✓</span>
+                          <strong>Status:</strong> <span style="color: #3A8726; font-weight: bold;">Paid ✓</span>
                       </p>
                   </div>
                   
                   <!-- Important Notes -->
-                  <div style="background-color: #fffbeb; border: 1px solid #a16207; border-radius: 8px; padding: 20px; margin: 25px 0;">
-                      <h3 style="color: #a16207; margin: 0 0 15px 0;">📋 Important Notes:</h3>
-                      <ul style="color: #92400e; margin: 0; padding-left: 20px;">
+                  <div style="background-color: #fffbeb; border: 1px solid #2C6A1B; border-radius: 8px; padding: 20px; margin: 25px 0;">
+                      <h3 style="color: #2C6A1B; margin: 0 0 15px 0;">📋 Important Notes:</h3>
+                      <ul style="color: #1E4B0F; margin: 0; padding-left: 20px;">
                           <li style="margin-bottom: 8px;">Keep this receipt for your records</li>
-                          <li style="margin-bottom: 8px;">This serves as proof of payment for your therapy session</li>
-                          <li style="margin-bottom: 8px;">You may need this for insurance claims or reimbursements</li>
+                          <li style="margin-bottom: 8px;">This serves as proof of payment for your field booking</li>
+                          <li style="margin-bottom: 8px;">Present this receipt when you arrive at Arena 03 Kilifi</li>
                           <li>Contact us if you need any additional documentation</li>
                       </ul>
                   </div>
                   
                   <p style="color: #666666; line-height: 1.6; margin: 25px 0 0 0; text-align: center;">
                       Questions about your receipt? Contact us at 
-                      <strong style="color: #eab308;">info@africajipendewellness.com</strong>
+                      <strong style="color: #3A8726;">info@arena03kilifi.com</strong>
                   </p>
               </div>
               
               <!-- Footer -->
               <div style="background-color: #f8f9fa; padding: 20px 30px; text-align: center;">
-                  <img src="cid:logo" alt="Africa Jipende Wellness Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
+                  <img src="cid:logo" alt="Arena 03 Kilifi Logo" style="max-width: 120px; height: auto; margin-bottom: 15px;">
                   <p style="color: #999999; margin: 0; font-size: 14px;">
-                      © 2025 Africa Jipende Wellness. All rights reserved.
+                      © 2025 Arena 03 Kilifi. All rights reserved.
                   </p>
               </div>
           </div>
