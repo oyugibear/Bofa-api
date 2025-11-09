@@ -136,11 +136,11 @@ class PaymentController extends AbstractController {
   
         const env = process.env.NODE_ENV === "development";
         const confirmationUrl = `/account`;
-        // const callbackUrl = env
-        //   ? `${process.env.DEV_CALLBACK_URL}${confirmationUrl}`
-        //   : `${process.env.PROD_CALLBACK_URL}${confirmationUrl}`;
-        const callbackUrl = `http://localhost:3000${confirmationUrl}`
-        console.log("Payment confirmation callbackUrl: ", callbackUrl)
+        const callbackUrl = env
+          ? `${process.env.DEV_CALLBACK_URL}${confirmationUrl}`
+          : `${process.env.PROD_CALLBACK_URL}${confirmationUrl}`;
+        // const callbackUrl = `http://localhost:3000${confirmationUrl}`
+        // console.log("Payment confirmation callbackUrl: ", callbackUrl)
         res.redirect(callbackUrl);
       } catch (error) {
         console.error(error);

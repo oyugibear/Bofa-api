@@ -4,8 +4,10 @@ const AppError = require("../../errors/app-error")
 async function createPaymentLink(data, company){
     // const env = process.env.NODE_ENV === "development" ? true : false
 
-    let callback = "https://d386424e92f1.ngrok-free.app/api/v1/payments/confirm_payment/paystack"
-    let failedUrl = "http://localhost:3000/account"
+    // let callback = "https://d386424e92f1.ngrok-free.app/api/v1/payments/confirm_payment/paystack"
+    // let failedUrl = "http://localhost:3000/account"
+    let callback = "https://bofa-api.onrender.com/api/v1/invoice/confirm_payment/paystack" 
+    let failedUrl = "https://bofa-eight.vercel.app/account" 
 
     const headers = {
         Authorization: `Bearer ${process.env.PAYSTACK_LOCAL_SECRET}`,

@@ -15,6 +15,22 @@ class UserService extends AbstractService {
         throw new AppError('Error finding user by email');
       }
     }
+
+    // Alias method for consistency with booking controller
+    static async getUserByEmail(email) {
+      return this.findByEmail(email);
+    }
+
+    static async createUser(userData) {
+      try {
+        const user = await AbstractService.createDocument(userModel, userData);
+        if (!user) throw new AppError("Could not create user", 400);
+        return user;
+      } catch (error) {
+        console.log(error);
+        throw new AppError('Error creating user');
+      }
+    }
     
     static async getUsers() {
       try {

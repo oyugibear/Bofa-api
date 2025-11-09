@@ -707,6 +707,155 @@ async function sendClientReceiptEmail (email, data) {
     console.log("Message sent: %s", info.messageId);
 }
 
+async function sendAdminBookingConfirmationEmail(email, booking, client, isNewUser = false) {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        auth: {
+            user: process.env.SENDERS_EMAIL,
+            pass: process.env.SENDERS_PASSWORD
+        }
+    });
+
+    const info = await transporter.sendMail({
+        from: {
+            name: 'Arena 03 Kilifi',
+            address: process.env.SENDERS_EMAIL,
+        },
+        to: email,
+        subject: "Booking Confirmation & Payment - Arena 03 Kilifi",
+        html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Booking Confirmation</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+            <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
+                <!-- Header -->
+                <div style="background-color: #3A8726; padding: 30px; text-align: center;">
+                    <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Arena 03 Kilifi</h1>
+                    <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">Field Booking Confirmation</p>
+                </div>
+                
+                <!-- Content -->
+                <div style="padding: 40px 30px;">
+                    <h2 style="color: #333333; margin: 0 0 20px 0;">Hello ${client.first_name}!</h2>
+                    <p style="color: #666666; line-height: 1.6; margin: 0 0 25px 0;">
+                        Your field booking has been confirmed. Here are the details of your reservation:
+                    </p>
+                    
+                    <!-- Booking Details -->
+                    <div style="background-color: #f8f9fa; padding: 25px; border-radius: 8px; margin: 25px 0;">
+                        <h3 style="color: #3A8726; margin: 0 0 15px 0; font-size: 18px;">Booking Details</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 8px 0; color: #666666; font-weight: bold;">Field:</td>
+                                <td style="padding: 8px 0; color: #333333;">${booking.field?.name || 'Field Information'}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #666666; font-weight: bold;">Date:</td>
+                                <td style="padding: 8px 0; color: #333333;">${booking.date_requested}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #666666; font-weight: bold;">Time:</td>
+                                <td style="padding: 8px 0; color: #333333;">${booking.time}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #666666; font-weight: bold;">Duration:</td>
+                                <td style="padding: 8px 0; color: #333333;">${booking.duration} hour(s)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; color: #666666; font-weight: bold;">Total Amount:</td>
+                                <td style="padding: 8px 0; color: #3A8726; font-weight: bold; font-size: 18px;">KSh ${booking.total_price?.toLocaleString() || booking.amount?.toLocaleString()}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Payment Section -->
+                    <div style="background-color: #fff3cd; padding: 25px; border-radius: 8px; margin: 25px 0; border-left: 4px solid #f39c12;">
+                        <h3 style="color: #f39c12; margin: 0 0 15px 0; font-size: 18px;">Complete Your Payment</h3>
+                        <p style="color: #856404; line-height: 1.6; margin: 0 0 20px 0;">
+                            To secure your booking, please complete the payment using the link below:
+                        </p>
+                        <div style="text-align: center; margin: 25px 0;">
+                            <a href="${booking.paymentLink}" 
+                               style="display: inline-block; padding: 15px 30px; background-color: #f39c12; color: #ffffff; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;">
+                                Pay Now - KSh ${booking.total_price?.toLocaleString() || booking.amount?.toLocaleString()}
+                            </a>
+                        </div>
+                    </div>
+
+                    ${isNewUser ? `
+                    <!-- Account Access (New Users Only) -->
+                    <div style="background-color: #e7f3ff; padding: 25px; border-radius: 8px; margin: 25px 0; border-left: 4px solid #007bff;">
+                        <h3 style="color: #007bff; margin: 0 0 15px 0; font-size: 18px;">🎉 Welcome! Your Account is Ready</h3>
+                        <p style="color: #084298; line-height: 1.6; margin: 0 0 15px 0;">
+                            We've created an account for you! You can now log in to view your bookings and manage your profile:
+                        </p>
+                        <table style="width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 5px; overflow: hidden;">
+                            <tr>
+                                <td style="padding: 15px; color: #666666; font-weight: bold; border-bottom: 1px solid #dee2e6;">Email:</td>
+                                <td style="padding: 15px; color: #333333; border-bottom: 1px solid #dee2e6;">${email}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 15px; color: #666666; font-weight: bold;">Password:</td>
+                                <td style="padding: 15px; color: #333333; font-family: monospace; background-color: #f8f9fa;">Temporary@123</td>
+                            </tr>
+                        </table>
+                        <p style="color: #084298; line-height: 1.6; margin: 15px 0 0 0; font-size: 14px;">
+                            <strong>Important:</strong> Please change your password after first login for security.
+                        </p>
+                    </div>
+                    ` : `
+                    <!-- Existing User Message -->
+                    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border-left: 4px solid #6c757d;">
+                        <p style="color: #495057; line-height: 1.6; margin: 0;">
+                            📱 You can log in to your existing account to view this booking and manage your profile.
+                        </p>
+                    </div>
+                    `}
+
+                    <!-- Important Notes -->
+                    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0;">
+                        <h4 style="color: #333333; margin: 0 0 15px 0;">Important Information:</h4>
+                        <ul style="color: #666666; line-height: 1.6; margin: 0; padding-left: 20px;">
+                            <li>Please arrive 10 minutes before your scheduled time</li>
+                            <li>Bring appropriate sports equipment and attire</li>
+                            <li>Payment must be completed to secure your booking</li>
+                            <li>Cancellations must be made 24 hours in advance</li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div style="text-align: center; margin: 30px 0 0 0; padding-top: 20px; border-top: 1px solid #dee2e6;">
+                        <p style="color: #666666; margin: 0 0 10px 0;">Questions? Contact us:</p>
+                        <p style="color: #3A8726; font-weight: bold; margin: 0;">
+                            📧 info@arena03kilifi.com | 📞 +254 700 000 000
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #dee2e6;">
+                    <p style="color: #666666; margin: 0; font-size: 14px;">
+                        Thank you for choosing Arena 03 Kilifi!<br>
+                        We look forward to seeing you on the field.
+                    </p>
+                </div>
+            </div>
+        </body>
+        </html>
+        `
+    });
+
+    console.log("Admin booking confirmation email sent: %s", info.messageId);
+}
+
 module.exports = {
   sendWelcomeEmail, 
   sendForgotEmail, 
@@ -714,5 +863,6 @@ module.exports = {
   sendAdminBookingPaidEmail,
   sendClientMeetingLinkEmail,
   sendClientRescheduleMeetingLinkEmail,
-  sendClientReceiptEmail
+  sendClientReceiptEmail,
+  sendAdminBookingConfirmationEmail
 }

@@ -3,7 +3,7 @@ const userModel = require("../../models/userModel.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const AppError = require("../../errors/app-error.js")
-// const { sendForgotEmail } = require("../Email/index.js")
+const { sendForgotEmail } = require("../../util/Email/sendMail.js")
 
 class AuthService extends AbstractService {
   constructor() {
@@ -36,10 +36,11 @@ class AuthService extends AbstractService {
       throw new AppError("Please provide valid email address or password", 400)
     }
   }
-  // static async sendForgotPasswordEmail(shortCode, email) {
-  //   const response = await sendForgotEmail(shortCode, email)
-  //   return response
-  // }
+  
+  static async sendForgotPasswordEmail(shortCode, email) {
+    const response = await sendForgotEmail(shortCode, email)
+    return response
+  }
 }
 
 module.exports = AuthService
