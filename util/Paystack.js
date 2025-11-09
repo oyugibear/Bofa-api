@@ -6,7 +6,7 @@ async function createPaymentLink(data, company){
 
     // let callback = "https://beb1be5aa361.ngrok-free.app/api/v1/invoice/confirm_payment"
     // let failedUrl = "http://localhost:3000/Invoices"
-    let callback = "https://bofa-api.onrender.com/api/v1/invoice/confirm_payment" 
+    let callback = "https://bofa-api.onrender.com/api/v1/payments/confirm_payment" 
     let failedUrl = "https://bofa-eight.vercel.app/account" 
 
     const headers = {
