@@ -1,14 +1,14 @@
 const AbstractController = require("../AbstractController.js")
 const User = require("../../models/userModel.js")
 const AuthService = require("../../services/Auth/index.js")
-// const { nanoid } = require("nanoid")
+const { nanoid } = require("nanoid")
 const bcrypt = require("bcryptjs")
 const AppError = require("../../errors/app-error.js")
 const UserService = require("../../services/user/index.js")
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var crypto = require('crypto');
-const { sendWelcomeEmail } = require("../../util/Email/sendMail.js")
+const { sendWelcomeEmail, sendForgotEmail } = require("../../util/Email/sendMail.js")
 
 class AuthController extends AbstractController {
     constructor() {
@@ -90,59 +90,118 @@ class AuthController extends AbstractController {
         });
       }
     }
-    
 
+    static async forgotPassword(req, res) {
+      try {
+        const { email } = req.body;
+        
+        // Validate input
+        if (!email) {
+          return res.status(400).json({ 
+            status: false,
+            error: 'Email is required' 
+          });
+        }
 
-    // static async forgotPassword(req, res) {
-    //     try {
-    //         const email = req.body.email
+        // Generate 6-digit reset code
+        const shortCode = nanoid(6).toUpperCase();
         
-    //         const shortCode = nanoid(6).toUpperCase()
-    //         const user = await User.findOneAndUpdate(
-    //           { email },
-    //           { passwordResetCode: shortCode }
-    //         )
+        // Find user and update with reset code
+        const user = await User.findOneAndUpdate(
+          { email },
+          { passwordResetCode: shortCode },
+          { new: true }
+        );
         
-    //         if (!user) throw new AppError("provide a valid user email address", 400)
+        if (!user) {
+          return res.status(400).json({
+            status: false,
+            error: "No account found with that email address"
+          });
+        }
         
-    //         const response = await AuthService.sendForgotPasswordEmail(
-    //           shortCode,
-    //           email
-    //         )
-    //         if (response) {
-    //           AbstractController.successReponse(
-    //             res,
-    //             response,
-    //             200,
-    //             "Short code sent to your email"
-    //           )
-    //         }
+        // Send reset email
+        try {
+          await sendForgotEmail(shortCode, email);
+          
+          return res.status(200).json({
+            status: true,
+            message: "Reset code sent to your email",
+            data: { email }
+          });
+        } catch (emailError) {
+          console.error('Failed to send reset email:', emailError);
+          return res.status(500).json({
+            status: false,
+            error: "Failed to send reset email. Please try again."
+          });
+        }
             
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
+      } catch (error) {
+        console.error('Forgot password error:', error);
+        return res.status(500).json({
+          status: false,
+          error: "Internal server error. Please try again."
+        });
+      }
+    }
 
-    //   }
+    static async resetPassword(req, res) {
+      try {
+        const { email, confirmationCode, newPassword } = req.body;
+        
+        // Validate input
+        if (!email || !confirmationCode || !newPassword) {
+          return res.status(400).json({
+            status: false,
+            error: "Email, confirmation code, and new password are required"
+          });
+        }
 
-    // static async resetPassword(req, res) {
-    //     try {
-    //         const { email, confirmationCode, newPassword } = req.body
+        if (newPassword.length < 6) {
+          return res.status(400).json({
+            status: false,
+            error: "Password must be at least 6 characters long"
+          });
+        }
         
-    //         const hashedPassword = await bcrypt.hash(newPassword, 8)
-    //         const user = await User.findOneAndUpdate(
-    //           { email, passwordResetCode: confirmationCode },
-    //           { password: hashedPassword, passwordResetCode: "" }
-    //         ).exec()
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(newPassword, 8);
         
-    //         if (!user) {
-    //           throw new AppError("Check email/code and try again", 400)
-    //         }
+        // Find user with matching email and reset code, then update password
+        const user = await User.findOneAndUpdate(
+          { 
+            email, 
+            passwordResetCode: confirmationCode.toUpperCase() 
+          },
+          { 
+            password: hashedPassword, 
+            passwordResetCode: "" // Clear the reset code after use
+          },
+          { new: true }
+        ).exec();
         
-    //         res.json({ ok: true })
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    //   }
+        if (!user) {
+          return res.status(400).json({
+            status: false,
+            error: "Invalid email or confirmation code"
+          });
+        }
+        
+        return res.status(200).json({
+          status: true,
+          message: "Password reset successfully",
+          data: { email }
+        });
+        
+      } catch (error) {
+        console.error('Reset password error:', error);
+        return res.status(500).json({
+          status: false,
+          error: "Internal server error. Please try again."
+        });
+      }
+    }
 
 }
 
