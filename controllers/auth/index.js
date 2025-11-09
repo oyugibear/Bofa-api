@@ -17,38 +17,93 @@ class AuthController extends AbstractController {
 
     static async signup(req, res) {
       try {
-        const { email } = req.body;
+        console.warn('🚀 Registration attempt started')
+        console.warn('📤 Request body:', req.body)
+        
+        const { email, first_name, second_name, phone_number, date_of_birth, password } = req.body;
+
+        // Validate required fields
+        const missingFields = [];
+        if (!first_name) missingFields.push('first_name');
+        if (!second_name) missingFields.push('second_name');
+        if (!email) missingFields.push('email');
+        if (!phone_number) missingFields.push('phone_number');
+        if (!date_of_birth) missingFields.push('date_of_birth');
+        if (!password) missingFields.push('password');
+        
+        if (missingFields.length > 0) {
+          console.warn('❌ Missing required fields:', missingFields)
+          return res.status(400).json({
+            status: false,
+            error: `Missing required fields: ${missingFields.join(', ')}`
+          });
+        }
+
+        console.warn('✅ All required fields present')
 
         // Check if the email already exists in the database
         const existingUser = await UserService.findByEmail(email);
         if (existingUser) {
+          console.warn('❌ Email already registered:', email)
           return res.status(400).json({
             status: false,
             error: "Email Already Registered"
           });
         }
 
+        console.warn('✅ Email is available:', email)
+
         // If the email doesn't exist, proceed with the signup process
+        console.warn('🔄 Creating user account...')
         let user = await AuthService.signup(req.body);
         user.password = undefined;
+
+        console.warn('✅ User created successfully:', user._id)
 
         // Send welcome email
         try {
           const emailResponse = await sendWelcomeEmail(email);
-          console.log("Welcome email sent:", emailResponse);
+          console.warn("📧 Welcome email sent:", emailResponse);
         } catch (error) {
-          console.error("Error sending welcome email:", error);
+          console.warn("⚠️ Error sending welcome email:", error.message);
         }
         
+        console.warn('✅ Registration completed successfully for:', email)
         return res.status(201).json({
           status: true,
           message: "Signup successful",
           data: user
         });
         
-        console.log("SIGN UP SUCCESS");
       } catch (error) {
-        console.error(error);
+        console.warn("🚨 Signup error occurred:", error);
+        console.warn("🚨 Error details:", {
+          name: error.name,
+          message: error.message,
+          code: error.code,
+          stack: error.stack
+        });
+        
+        // Handle MongoDB validation errors
+        if (error.name === 'ValidationError') {
+          const validationErrors = Object.values(error.errors).map(err => err.message);
+          console.warn("❌ Validation errors:", validationErrors);
+          return res.status(400).json({
+            status: false,
+            error: `Validation failed: ${validationErrors.join(', ')}`
+          });
+        }
+        
+        // Handle duplicate key errors
+        if (error.code === 11000) {
+          console.warn("❌ Duplicate key error for email");
+          return res.status(400).json({
+            status: false,
+            error: "Email already exists"
+          });
+        }
+        
+        console.warn("❌ Unexpected error during registration");
         return res.status(500).json({
           status: false,
           error: error.message || "Internal Server Error"
