@@ -92,17 +92,17 @@ class PaymentController extends AbstractController {
           client: booking.postedBy,
         }
 
-        // try {
-        //   // const filename = await generateReceiptPdf(compiledData);
-        //   const cloudinaryUrl = await uploadToCloudinary(filename, "Receipts");
+        try {
+          // const filename = await generateReceiptPdf(compiledData);
+          const cloudinaryUrl = await uploadToCloudinary(filename, "Receipts");
   
-        //   payment.receipt_pdf = cloudinaryUrl;
-        //   payment.payment_status = "Completed";
-        //   await payment.save();
-        // } catch (error) {
-        //   console.error("Error saving payment: ", error);
-        //   throw new AppError("Internal Server Error", 500);
-        // }
+          payment.receipt_pdf = cloudinaryUrl;
+          payment.payment_status = "Completed";
+          await payment.save();
+        } catch (error) {
+          console.error("Error saving payment: ", error);
+          throw new AppError("Internal Server Error", 500);
+        }
   
         // Send email to admin and client about the payment
         try {

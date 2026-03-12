@@ -15,6 +15,13 @@ const leagueSchema = new mongoose.Schema({
     registrationFee: { type: Number, default: 0 },
     category: { type: String, required: true },
     level: { type: String, required: true },
+    // Requested By peter
+    format: { type: String, required: true }, // e.g., 6-aside, 11-aside
+    ageGroup: { type: String, required: true }, // e.g., U18, Open
+    type: { type: String, required: true }, // e.g., Knockout, League
+    rounds: { type: Number, default: 0 },
+    consolationRounds: { type: Number, default: 0 },
+    gender: { type: String, required: true  }, // e.g., Male, Female, Mixed
     schedule: [{
         matchId: { type: mongoose.Types.ObjectId, ref: "Match" },
         date: { type: Date, required: true },
@@ -39,6 +46,7 @@ const leagueSchema = new mongoose.Schema({
     postedBy: { type: mongoose.Types.ObjectId, ref: "User", required: true },
     edittedBy: { type: mongoose.Types.ObjectId, ref: "User" },
     lastViewedBy: { type: mongoose.Types.ObjectId, ref: "User" },
+
 },
 { timestamps: true }
 );
