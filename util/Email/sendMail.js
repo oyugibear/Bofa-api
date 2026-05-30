@@ -246,6 +246,82 @@ async function sendBookingRecievedEmail (email) {
     console.log("Message sent: %s", info.messageId);
 }
 
+async function sendTeamInviteEmail(email, { teamName, captainName, inviteLink, existingUser = false }) {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        auth: {
+          user: process.env.SENDERS_EMAIL,
+          pass: process.env.SENDERS_PASSWORD
+        }
+    });
+
+    const info = await transporter.sendMail({
+        from: {
+            name: 'Arena 03 Kilifi',
+            address: process.env.SENDERS_EMAIL,
+        },
+        to: email,
+        subject: `You're invited to join ${teamName} at Arena 03 Kilifi`,
+        html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Team Invitation</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+            <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
+                <div style="background-color: #3A8726; padding: 30px; text-align: center;">
+                    <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Arena 03 Kilifi</h1>
+                    <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">Team Invitation</p>
+                </div>
+
+                <div style="padding: 40px 30px;">
+                    <h2 style="color: #333333; margin: 0 0 20px 0;">You've been invited to join ${teamName}</h2>
+                    <p style="color: #666666; line-height: 1.6; margin: 0 0 20px 0;">
+                        ${captainName || 'Your team captain'} added your email to the ${teamName} roster on Arena 03 Kilifi.
+                        You are receiving this email so you can ${existingUser ? 'log in to your account' : 'create an account'}, join the team, view upcoming matches, and confirm whether you will participate.
+                    </p>
+
+                    <div style="background-color: #f0f9ff; border-left: 4px solid #3A8726; padding: 20px; margin: 25px 0;">
+                        <h3 style="color: #333333; margin: 0 0 15px 0;">After signing up, you can:</h3>
+                        <ul style="color: #666666; margin: 0; padding-left: 20px;">
+                            <li style="margin-bottom: 8px;">See your team roster</li>
+                            <li style="margin-bottom: 8px;">View upcoming team matches</li>
+                            <li style="margin-bottom: 8px;">Confirm your participation for scheduled matches</li>
+                        </ul>
+                    </div>
+
+                    <div style="text-align: center; margin: 30px 0;">
+                        <a href="${inviteLink}" style="background-color: #3A8726; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+                            ${existingUser ? 'View Your Team' : `Join ${teamName}`}
+                        </a>
+                    </div>
+
+                    <p style="color: #666666; line-height: 1.6; margin: 25px 0 0 0; font-size: 14px;">
+                        If you were not expecting this invitation, you can safely ignore this email.
+                    </p>
+                </div>
+
+                <div style="background-color: #f8f9fa; padding: 20px 30px; text-align: center;">
+                    <p style="color: #999999; margin: 0; font-size: 14px;">
+                        © 2026 Arena 03 Kilifi. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </body>
+        </html>
+        `
+      });
+
+    console.log("Team invite email sent: %s", info.messageId);
+    return info.messageId;
+}
+
 async function sendAdminBookingPaidEmail (email, booking, payment) {
   const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -864,5 +940,6 @@ module.exports = {
   sendClientMeetingLinkEmail,
   sendClientRescheduleMeetingLinkEmail,
   sendClientReceiptEmail,
-  sendAdminBookingConfirmationEmail
+  sendAdminBookingConfirmationEmail,
+  sendTeamInviteEmail
 }

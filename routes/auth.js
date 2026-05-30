@@ -2,12 +2,14 @@ const express = require('express');
 const AuthController = require("../controllers/auth/index.js")
 const { body } = require("express-validator");
 const RequestValidator = require('../middlewares/request-validator.js');
+const { authenticateToken } = require('../middlewares/auth.js');
 
 const router = express.Router()
 
 
 router.post('/register', AuthController.signup)
 router.post('/login', AuthController.login)
+router.put('/change-password', authenticateToken, AuthController.changePassword)
 router.post(
     "/forgot-password",
     [body("email").isEmail().withMessage("provide valid email address")],

@@ -39,6 +39,23 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         default: "pending",
     },
+    booking_type: {
+        type: String,
+        enum: ['customer_booking', 'admin_booking', 'manager_scheduled_match'],
+        default: 'customer_booking',
+    },
+    payment_required: {
+        type: Boolean,
+        default: true,
+    },
+    payment_waived: {
+        type: Boolean,
+        default: false,
+    },
+    source_match: {
+        type: mongoose.Types.ObjectId,
+        ref: "Match"
+    },
     postedBy: { type: mongoose.Types.ObjectId, ref: "User" },
 },
 { timestamps: true }

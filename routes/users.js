@@ -9,8 +9,8 @@ router.get('/:id', authenticateToken, UserController.getUser);
 router.put('/:id', authenticateToken, UserController.updateUser);
 
 // Admin only routes
-router.get('/', authenticateToken, authorizeRole('Admin'), UserController.getUsers);
-router.delete('/:id', authenticateToken, authorizeRole('Admin'), UserController.deleteUser);
+router.get('/', authenticateToken, authorizeRole('Admin', 'Coach', 'SubAdmin'), UserController.getUsers);
+router.delete('/:id', authenticateToken, authorizeRole('Admin', 'Coach', 'SubAdmin'), UserController.deleteUser);
 
 
 

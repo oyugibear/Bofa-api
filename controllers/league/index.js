@@ -6,6 +6,20 @@ const userService = require("../../services/user/index.js")
 const MatchService = require("../../services/Match/index.js")
 const TeamService = require("../../services/Team/index.js")
 const StandingsService = require("../../services/Standings/index.js")
+const BookingService = require("../../services/booking/index.js")
+
+const formatDateString = (date) => date.toISOString().split('T')[0];
+
+const timeToMinutes = (time = '10:00') => {
+  const [hours = '10', minutes = '0'] = String(time).split(':');
+  return (Number(hours) * 60) + Number(minutes);
+}
+
+const minutesToTime = (minutes) => {
+  const hours = Math.floor(minutes / 60) % 24;
+  const mins = minutes % 60;
+  return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+}
 
 class LeagueController extends AbstractController {
     constructor() {
@@ -27,11 +41,23 @@ class LeagueController extends AbstractController {
 
     static async generateMatches(req, res) {
       try {
-        const { leagueId, numberOfMatches, startDate, venue, postedBy } = req.body;
+        const {
+          leagueId,
+          numberOfMatches,
+          startDate,
+          startTime = '10:00',
+          venue,
+          field,
+          fieldId,
+          postedBy,
+          intervalMinutes = 60
+        } = req.body;
+        const selectedField = field || fieldId;
+        const managerUser = postedBy?._id || postedBy || req.user?._id;
         
         // Validate required fields
-        if (!leagueId || !numberOfMatches || !venue) {
-          throw new AppError('Missing required fields: leagueId, numberOfMatches, venue', 400);
+        if (!leagueId || !numberOfMatches) {
+          throw new AppError('Missing required fields: leagueId, numberOfMatches', 400);
         }
 
         // Get league with teams
@@ -104,40 +130,74 @@ class LeagueController extends AbstractController {
         // Generate matches with scheduling
         let currentDate = startDate ? new Date(startDate) : new Date();
         let matchesPerDay = 0;
-        const maxMatchesPerDay = 2;
-        let currentTime = 10; // Start at 10 AM
+        const maxMatchesPerDay = 8;
+        let currentTime = timeToMinutes(startTime);
+        const scheduleInterval = Number(intervalMinutes) || 60;
+        const teamNameById = new Map(teams.map(team => [team._id.toString(), team.name]));
         
         for (let i = 0; i < teamPairings.length; i++) {
           const pairing = teamPairings[i];
           
           // Schedule match time
-          const matchDateTime = new Date(currentDate);
-          matchDateTime.setHours(currentTime, 0, 0, 0);
+          const matchDate = formatDateString(currentDate);
+          const matchTime = minutesToTime(currentTime);
+
+          if (selectedField) {
+            const hasConflict = await BookingService.hasBookingConflict({
+              date_requested: matchDate,
+              time: matchTime,
+              duration: '1',
+              field: selectedField
+            });
+
+            if (hasConflict) {
+              throw new AppError(`Field is already held on ${matchDate} at ${matchTime}`, 409);
+            }
+          }
           
           const matchData = {
               homeTeam: pairing.homeTeam,
               awayTeam: pairing.awayTeam,
               league: leagueId,
-              date: matchDateTime,
-              venue: venue,
+              date: matchDate,
+              time: matchTime,
+              venue: venue || 'Main Field',
+              ...(selectedField && { field: selectedField }),
               status: 'scheduled',
               matchweek: Math.floor(i / maxMatchesPerDay) + 1,
-              ...(postedBy && { postedBy: postedBy._id || postedBy })
+              postedBy: managerUser
           };
 
           // Create the match
           const createdMatch = await MatchService.createMatch(matchData);
+
+          if (selectedField) {
+            const booking = await BookingService.createManagerMatchBooking({
+              match: createdMatch,
+              field: selectedField,
+              date_requested: matchDate,
+              time: matchTime,
+              postedBy: managerUser,
+              team_name: `${teamNameById.get(pairing.homeTeam.toString()) || 'Home Team'} vs ${teamNameById.get(pairing.awayTeam.toString()) || 'Away Team'}`
+            });
+
+            if (booking?._id) {
+              createdMatch.booking = booking._id;
+              await createdMatch.save();
+            }
+          }
+
           matches.push(createdMatch);
           
           // Update match scheduling
           matchesPerDay++;
-          currentTime += 2; // 2 hours between matches
+          currentTime += scheduleInterval;
           
-          if (matchesPerDay >= maxMatchesPerDay || currentTime >= 18) {
+          if (matchesPerDay >= maxMatchesPerDay || currentTime >= (22 * 60)) {
               // Move to next day
               currentDate.setDate(currentDate.getDate() + 1);
               matchesPerDay = 0;
-              currentTime = 10; // Reset to 10 AM
+              currentTime = timeToMinutes(startTime);
           }
         }
 

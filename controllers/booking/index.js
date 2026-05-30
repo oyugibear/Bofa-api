@@ -201,13 +201,31 @@ class BookingController extends AbstractController {
     static async getAvailability(req, res) {
       try {
         const bookings = await BookingService.getBookings();
+        const paidBookings = bookings.filter((booking) => {
+          const paymentStatus = booking.paymentInfo?.payment_status;
+          const normalizedPaymentStatus = typeof paymentStatus === "string" ? paymentStatus.toLowerCase() : "";
+          const normalizedBookingStatus = typeof booking.status === "string" ? booking.status.toLowerCase() : "";
+
+          return (
+            booking.payment_waived === true ||
+            booking.booking_type === "manager_scheduled_match" ||
+            normalizedPaymentStatus === "completed" ||
+            normalizedPaymentStatus === "paid" ||
+            normalizedBookingStatus === "paid" ||
+            normalizedBookingStatus === "completed"
+          );
+        });
+
         const data = { 
-          bookedSlots: bookings.map(b => ({ 
+          bookedSlots: paidBookings.map(b => ({ 
             date: b.date_requested, 
             time: b.time, 
             duration: b.duration,
             field: b.field,
-            status: b.status
+            status: b.status,
+            booking_type: b.booking_type,
+            payment_waived: b.payment_waived,
+            payment_status: b.paymentInfo?.payment_status
           })),
         }
         if (bookings) {

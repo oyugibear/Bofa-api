@@ -80,7 +80,7 @@ class PaymentController extends AbstractController {
           payment_method: "Online: " + paystackData.authorization.channel,
           payment_reference: req.query.reference,
           payment_date: paystackData.paid_at,
-          payment_status: "paid",
+          payment_status: "Completed",
           currency: paystackData.currency,
           notes: `Paystack Payment\n fees: ${paystackData.fees} \n gateway_response: ${paystackData.gateway_response}`,
         };
@@ -93,11 +93,12 @@ class PaymentController extends AbstractController {
         }
 
         try {
-          // const filename = await generateReceiptPdf(compiledData);
-          const cloudinaryUrl = await uploadToCloudinary(filename, "Receipts");
-  
-          payment.receipt_pdf = cloudinaryUrl;
-          payment.payment_status = "Completed";
+          payment.payment_method = paymentData.payment_method;
+          payment.payment_reference = paymentData.payment_reference;
+          payment.payment_date = paymentData.payment_date;
+          payment.payment_status = paymentData.payment_status;
+          payment.currency = paymentData.currency;
+          payment.notes = paymentData.notes;
           await payment.save();
         } catch (error) {
           console.error("Error saving payment: ", error);
@@ -130,7 +131,7 @@ class PaymentController extends AbstractController {
         }
 
         // update payment status in booking
-        booking.payment_status = "paid";
+        booking.status = "completed";
         booking.paymentInfo = payment._id;
         await booking.save();
   

@@ -20,7 +20,13 @@ class MatchService extends AbstractService {
 
     static async getMatches() {
         try {
-            const matches = await AbstractService.getDocuments(matchModel)
+            const matches = await matchModel.find()
+                .populate('homeTeam')
+                .populate('awayTeam')
+                .populate('field')
+                .populate('booking')
+                .populate('participants.user')
+                .populate('participants.team')
             if(!matches) throw new AppError("could not get all the matches", 400)
             return matches
         } catch (error) {
@@ -32,6 +38,12 @@ class MatchService extends AbstractService {
     static async getMatch(id) {
         try {
             const match = await matchModel.findById(id)
+                .populate('homeTeam')
+                .populate('awayTeam')
+                .populate('field')
+                .populate('booking')
+                .populate('participants.user')
+                .populate('participants.team')
             if(!match) throw new AppError("could not get the match data", 400)
             return match
         } catch (error) {

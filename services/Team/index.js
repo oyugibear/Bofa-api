@@ -20,7 +20,11 @@ class TeamService extends AbstractService {
 
     static async getTeams() {
         try {
-            const teams = await teamModel.find().populate('members').populate('matches');
+            const teams = await teamModel.find()
+                .populate('members')
+                .populate('captain')
+                .populate('coach')
+                .populate('matches');
             if(!teams) throw new AppError("could not get all the teams", 400)
             return teams
         } catch (error) {
@@ -33,6 +37,8 @@ class TeamService extends AbstractService {
         try {
             const team = await teamModel.findById(id)
                 .populate('members')
+                .populate('captain')
+                .populate('coach')
                 .populate({
                     path: 'matches',
                     populate: {
