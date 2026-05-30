@@ -443,8 +443,8 @@ async function generateReceiptPdf(data) {
     await page.setContent(htmlContent);
     await page.emulateMediaType('screen');
 
-    // const filename = `public/receipt_${data.booking.pos + "-" + data.payment.payment_date}.pdf`;
-    const filename = `public/receipt.pdf`;
+    let filename = `public/receipt_${data.booking.id + "-" + data.payment.payment_date}.pdf`;
+    // const filename = `public/receipt.pdf`;
 
     await page.pdf({
         path: filename,

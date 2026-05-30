@@ -5,6 +5,8 @@ const { nanoid } = require("nanoid")
 const bcrypt = require("bcryptjs")
 const AppError = require("../../errors/app-error.js")
 const UserService = require("../../services/user/index.js")
+const teamModel = require("../../models/teamModel.js")
+const teamInviteModel = require("../../models/teamInviteModel.js")
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var crypto = require('crypto');
@@ -20,7 +22,7 @@ class AuthController extends AbstractController {
         console.warn('🚀 Registration attempt started')
         console.warn('📤 Request body:', req.body)
         
-        const { email, first_name, second_name, phone_number, date_of_birth, password } = req.body;
+        const { email, first_name, second_name, phone_number, date_of_birth, password, teamInviteToken } = req.body;
 
         // Validate required fields
         const missingFields = [];
@@ -55,7 +57,44 @@ class AuthController extends AbstractController {
 
         // If the email doesn't exist, proceed with the signup process
         console.warn('🔄 Creating user account...')
-        let user = await AuthService.signup(req.body);
+        let invite = null;
+        if (teamInviteToken) {
+          invite = await teamInviteModel.findOne({
+            token: teamInviteToken,
+            status: 'pending',
+            expiresAt: { $gt: new Date() }
+          });
+
+          if (!invite) {
+            return res.status(400).json({
+              status: false,
+              error: "This team invitation is invalid or has expired"
+            });
+          }
+
+          if (invite.email.toLowerCase() !== email.toLowerCase()) {
+            return res.status(400).json({
+              status: false,
+              error: "This invitation was sent to a different email address"
+            });
+          }
+        }
+
+        const userPayload = {
+          ...req.body,
+          ...(invite && { team_id: invite.team })
+        };
+
+        let user = await AuthService.signup(userPayload);
+
+        if (invite) {
+          await teamModel.findByIdAndUpdate(invite.team, { $addToSet: { members: user._id } });
+          invite.status = 'accepted';
+          invite.acceptedBy = user._id;
+          invite.acceptedAt = new Date();
+          await invite.save();
+        }
+
         user.password = undefined;
 
         console.warn('✅ User created successfully:', user._id)
@@ -251,6 +290,63 @@ class AuthController extends AbstractController {
         
       } catch (error) {
         console.error('Reset password error:', error);
+        return res.status(500).json({
+          status: false,
+          error: "Internal server error. Please try again."
+        });
+      }
+    }
+
+    static async changePassword(req, res) {
+      try {
+        const { currentPassword, newPassword } = req.body;
+
+        if (!req.user?._id) {
+          return res.status(401).json({
+            status: false,
+            error: "Authentication required"
+          });
+        }
+
+        if (!currentPassword || !newPassword) {
+          return res.status(400).json({
+            status: false,
+            error: "Current password and new password are required"
+          });
+        }
+
+        if (newPassword.length < 6) {
+          return res.status(400).json({
+            status: false,
+            error: "Password must be at least 6 characters long"
+          });
+        }
+
+        const user = await User.findById(req.user._id);
+        if (!user) {
+          return res.status(404).json({
+            status: false,
+            error: "User not found"
+          });
+        }
+
+        const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!passwordMatch) {
+          return res.status(400).json({
+            status: false,
+            error: "Current password is incorrect"
+          });
+        }
+
+        user.password = await bcrypt.hash(newPassword, 8);
+        await user.save();
+
+        return res.status(200).json({
+          status: true,
+          message: "Password changed successfully"
+        });
+      } catch (error) {
+        console.error('Change password error:', error);
         return res.status(500).json({
           status: false,
           error: "Internal server error. Please try again."

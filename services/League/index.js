@@ -41,7 +41,7 @@ class LeagueService extends AbstractService {
                 .populate({
                     path: 'matches',
                     model: 'Match',
-                    select: 'homeTeam awayTeam date venue status score',
+                    select: 'homeTeam awayTeam date time venue status score field booking',
                     populate: [
                         {
                             path: 'homeTeam',
@@ -52,6 +52,11 @@ class LeagueService extends AbstractService {
                             path: 'awayTeam',
                             model: 'Team',
                             select: 'name'
+                        },
+                        {
+                            path: 'field',
+                            model: 'Field',
+                            select: 'name price_per_hour'
                         }
                     ]
                 });
@@ -120,7 +125,7 @@ class LeagueService extends AbstractService {
                 }).populate({
                     path: 'matches',
                     model: 'Match',
-                    select: 'homeTeam awayTeam date venue status score',
+                    select: 'homeTeam awayTeam date time venue status score field booking',
                     populate: [
                         {
                             path: 'homeTeam',
@@ -131,6 +136,11 @@ class LeagueService extends AbstractService {
                             path: 'awayTeam',
                             model: 'Team',
                             select: 'name'
+                        },
+                        {
+                            path: 'field',
+                            model: 'Field',
+                            select: 'name price_per_hour'
                         }
                     ]
                 });
