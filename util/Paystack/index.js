@@ -25,8 +25,8 @@ async function createPaymentLink(data, company){
         email: data.postedBy.email,
         name: data.postedBy.first_name + " " + data.postedBy.second_name ,
         phone: data.postedBy.phone_number,
-        // amount: Math.round(data.final_amount_invoiced) * 100,
-        amount: 20 * 100,
+        amount: Math.round(data.final_amount_invoiced) * 100,
+        // amount: 20 * 100,
     };
 
     let response

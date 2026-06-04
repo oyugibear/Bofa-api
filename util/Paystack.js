@@ -14,7 +14,7 @@ async function createPaymentLink(data, company){
         "Content-Type": "application/json",
     }
     const metadata = JSON.stringify(data)
-    // console.log("Paystack Data", data)
+    console.log("Paystack Data", data)
     const email = data.client?.organization?.company_name === 'Sibowasco' ? "jroyugi@gmail.com" : "jroyugi@gmail.com";
 
     const payload = {
@@ -23,8 +23,8 @@ async function createPaymentLink(data, company){
         name: data.client.name,
         phone: `+254${data.client.phone_number}`,
         // First option for production
-        // amount: data.final_amount * 100,
-        amount: 20 * 100,
+        amount: data.final_amount * 100,
+        // amount: 20 * 100,
     };
 
     let response

@@ -70,7 +70,7 @@ class PaymentController extends AbstractController {
           
           // For now, return a generic success response
           console.log("Unknown payment reference:", req.query.reference);
-          const callbackUrl = `https://africajipendewellness.com/sessions?payment=success&unknown=true`;
+          const callbackUrl = `https://bofa-eight.vercel.app/`;
           return res.redirect(callbackUrl);
         }
         

@@ -340,7 +340,7 @@ async function sendAdminBookingPaidEmail (email, booking, payment) {
           name: 'Arena 03 Kilifi',
           address: process.env.SENDERS_EMAIL,
       }, // sender address
-      to: "info@arena03kilifi.com", // list of receivers
+      to: "arena03kilifi@gmail.com", // list of receivers
       subject: "New Paid Booking - Action Required", // Subject line
       html: `
       <!DOCTYPE html>
